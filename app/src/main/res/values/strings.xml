@@ -1,0 +1,55 @@
+<resources>
+    <string name="app_name">Recipe Manager</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="register">Signup</string>
+    <string name="search_hint">Search recipes</string>
+    <string name="filter">filter</string>
+    <string name="recent_recipes">Recently Added</string>
+    <string name="popular_posts">All Recipes</string>
+    <string name="recipe_categories">Categories</string>
+    <string name="recipe_name">Recipe Name</string>
+    <string name="recipe_description">Recipe Description</string>
+    <string name="ingredients">Ingredients\n</string>
+    <string name="instructions">Instructions</string>
+    <string name="submit">Submit</string>
+    <string name="create_recipe">Create Recipe</string>
+    <string name="select_image">Upload Image</string>
+    <string name="add_image">Add Image</string>
+    <string name="cooking_time">Cooking Time (minutes)</string>
+    <string name="toggle_favorite">Toggle Favorite</string>
+    <string name="recipe_name_hint">name\n</string>
+    <string name="recipe_description_hint">enter description</string>
+    <string name="instructions_hint">instructions\n</string>
+    <string name="cooking_time_hint">in minutes\n</string>
+    <string name="add_new_recipe">Add New Recipe</string>
+    <string name="select_ingredients">Add/Select Ingredients\n</string>
+    <string name="search_result">Search Result</string>
+    <string name="details">Details</string>
+    <string name="ingredientsTxt">Ingredients</string>
+    <string name="how_to_prepare">How To Prepare:</string>
+    <string name="favorite">Favorite</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="share">Share</string>
+    <string name="review_recipe">Review Recipe</string>
+    <string name="recipe_type">Recipe Category\n</string>
+
+</resources>
