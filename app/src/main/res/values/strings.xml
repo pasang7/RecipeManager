@@ -51,5 +51,6 @@
     <string name="share">Share</string>
     <string name="review_recipe">Review Recipe</string>
     <string name="recipe_type">Recipe Category\n</string>
+    <string name="forgot_password">Forgot Password?</string>
 
 </resources>

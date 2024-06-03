@@ -1,9 +1,12 @@
 package com.sydney.recipemanagaer.ui.view.fragments;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -31,6 +34,7 @@ public class AccountSettingFragment extends Fragment {
     private String userImagePath;
     private UserViewModel viewModel;
     private String userId, userRole;
+    private Button buttonChangePassword;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,6 +62,7 @@ public class AccountSettingFragment extends Fragment {
 
         buttonUpdateUser = view.findViewById(R.id.btnUpdateUser);
         buttonChangeProfilePic = view.findViewById(R.id.btnChangeProfilePic);
+        buttonChangePassword = view.findViewById(R.id.btnChangePassword);
     }
 
     private void populateFields() {
@@ -69,7 +74,7 @@ public class AccountSettingFragment extends Fragment {
             editTextUserBio.setText(args.getString("bio"));
             editTextUserEmail.setText(args.getString("email"));
             editTextUserEmail.setKeyListener(null);
-            editTextUserPassword.setText(args.getString("password"));
+//            editTextUserPassword.setText(args.getString("password"));
 //            editTextUserRole.setText(args.getString("role"));
             userRole = args.getString("role");
 
@@ -104,6 +109,50 @@ public class AccountSettingFragment extends Fragment {
                             .into(imageViewSelected);
                 }
         );
+
+        buttonChangePassword.setOnClickListener(v -> showChangePasswordDialog());
+    }
+
+    private void showChangePasswordDialog() {
+        Dialog dialog = new Dialog(getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.dialog_change_password);
+
+        // Set dialog to match parent dimensions
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+
+        EditText editTextCurrentPassword = dialog.findViewById(R.id.editTextCurrentPassword);
+        EditText editTextNewPassword = dialog.findViewById(R.id.editTextNewPassword);
+        EditText editTextConfirmNewPassword = dialog.findViewById(R.id.editTextConfirmNewPassword);
+        Button btnSubmitChangePassword = dialog.findViewById(R.id.btnSubmitChangePassword);
+
+        btnSubmitChangePassword.setOnClickListener(v -> {
+            String currentPassword = editTextCurrentPassword.getText().toString();
+            String newPassword = editTextNewPassword.getText().toString();
+            String confirmNewPassword = editTextConfirmNewPassword.getText().toString();
+
+            if (newPassword.equals(confirmNewPassword)) {
+                updatePassword(currentPassword, newPassword, confirmNewPassword, dialog);
+            } else {
+                Toast.makeText(getContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        dialog.show();
+    }
+
+    private void updatePassword(String currentPassword, String newPassword, String confirmPassword, Dialog dialog) {
+        viewModel.updatePassword(currentPassword, newPassword, confirmPassword).observe(getViewLifecycleOwner(), result -> {
+            if (result.equals("Password Updated Successfully")) {
+                Toast.makeText(getContext(), result, Toast.LENGTH_LONG).show();
+                dialog.dismiss();
+                Util.navigateToLoginActivity(getContext());
+            } else {
+                Toast.makeText(getContext(), result, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void updateUser() {
@@ -111,7 +160,6 @@ public class AccountSettingFragment extends Fragment {
         String name = editTextUserFullName.getText().toString();
         String bio = editTextUserBio.getText().toString();
         String email = editTextUserEmail.getText().toString();
-        String password = editTextUserPassword.getText().toString();
 
         User updatedUser = new User(userId, name, email, username, bio, userImagePath, userRole);
 

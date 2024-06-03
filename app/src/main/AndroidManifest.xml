@@ -25,6 +25,9 @@
             android:name=".ui.view.activities.RegisterActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.view.activities.ForgotPasswordActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.view.activities.MainActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan"

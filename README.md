@@ -1,2 +1,1 @@
-# recipe-manager
-An Android Application
+# recipe-manager-android

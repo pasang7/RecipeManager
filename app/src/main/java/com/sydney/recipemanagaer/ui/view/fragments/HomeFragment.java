@@ -156,11 +156,11 @@ public class HomeFragment extends Fragment implements GenericRecipeAdapter.OnRec
         List<Recipe> filteredRecipes = allRecipes.stream()
                 .filter(recipe -> {
                     String categoryJsonString = recipe.getCategoryId();
-                    if (categoryJsonString != null) {
+                    if (categoryJsonString != null && !categoryJsonString.equals("null") && !categoryJsonString.isEmpty()) {
                         try {
                             JSONObject categoryJson = new JSONObject(categoryJsonString);
-                            String categoryName = categoryJson.getString("name");
-                            return categoryName.equals(category.getName());
+                            String categoryName = categoryJson.optString("name", null);
+                            return categoryName != null && categoryName.equals(category.getName());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

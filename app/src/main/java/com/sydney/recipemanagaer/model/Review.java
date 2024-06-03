@@ -2,7 +2,7 @@ package com.sydney.recipemanagaer.model;
 
 public class Review {
     private String id;
-    private String recipeId;
+    private String recipe;
     private String userId;
     private String review;
     private float rating;
@@ -19,16 +19,16 @@ public class Review {
 
 
     // Constructor
-    public Review(String review, float rating, String recipeId) {
+    public Review(String review, float rating, String recipe) {
         this.rating = rating;
         this.review = review;
-        this.recipeId = recipeId;
+        this.recipe = recipe;
     }
 
-    public Review(String review, float rating, String recipeId, String reviewerName) {
+    public Review(String review, float rating, String recipe, String reviewerName) {
         this.rating = rating;
         this.review = review;
-        this.recipeId = recipeId;
+        this.recipe = recipe;
         this.reviewerName = reviewerName;
     }
 
@@ -40,12 +40,12 @@ public class Review {
         this.id = id;
     }
 
-    public String getRecipeId() {
-        return recipeId;
+    public String getRecipe() {
+        return recipe;
     }
 
-    public void setRecipeId(String recipeId) {
-        this.recipeId = recipeId;
+    public void setRecipe(String recipe) {
+        this.recipe = recipe;
     }
 
     public String getUserId() {

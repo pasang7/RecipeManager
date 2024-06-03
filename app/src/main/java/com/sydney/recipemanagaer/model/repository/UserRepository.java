@@ -33,6 +33,7 @@ public class UserRepository {
     private Context context;
     private final RetrofitService retrofitService;
     private SharedPreferences sharedPreferences;
+    private String token;
 
 
     public UserRepository(Context context) {
@@ -42,13 +43,13 @@ public class UserRepository {
         this.context = context;
         sharedPreferences = context.getSharedPreferences(Util.SHARED_PREFS_FILE, MODE_PRIVATE);
         retrofitService = new RetrofitService(context);
+        this.token = getToken();
     }
 
     public MutableLiveData<List<User>> getUsers() {
         // This should be replaced with actual data fetching logic
         MutableLiveData<List<User>> liveData = new MutableLiveData<>();
         List<User> users = new ArrayList<>();
-        String token = getToken();
 
         retrofitService.getUsers(token, new Callback<ResponseBody>() {
             @Override
@@ -91,7 +92,6 @@ public class UserRepository {
 
     public MutableLiveData<User> getUser(String userId) {
         MutableLiveData<User> liveData = new MutableLiveData<>();
-        String token = getToken();
 
         retrofitService.getUserById(userId, token, new Callback<ResponseBody>() {
             @Override
@@ -169,7 +169,6 @@ public class UserRepository {
             throw new IllegalArgumentException("User cannot be null");
         }
 
-        String token = getToken();
         MutableLiveData<String> result = new MutableLiveData<>();
         retrofitService.updateUser(user, token, new Callback<ResponseBody>() {
             @Override
@@ -193,7 +192,6 @@ public class UserRepository {
     public LiveData<String> deleteUser(String id) {
         MutableLiveData<String> responseData = new MutableLiveData<>();
 
-        String token = getToken();
         retrofitService.deleteUser(id, token, new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
@@ -291,10 +289,29 @@ public class UserRepository {
         return sharedPreferences.getString(Util.USER_ID_KEY, null);
     }
 
+    public LiveData<String> updatePassword(String currentPassword, String newPassword, String confirmPassword) {
+        MutableLiveData<String> result = new MutableLiveData<>();
+        retrofitService.updatePassword(token, currentPassword, newPassword, confirmPassword, new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    result.postValue("Password Updated Successfully");
+                } else {
+                    result.postValue("Error Updating Password: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                result.postValue("Error: " + t.getMessage());
+            }
+        });
+        return result;
+    }
+
     public void clearSession() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-//        editor.remove(Util.TOKEN_KEY);
-//        editor.remove(Util.USER_ID_KEY);
+
         editor.clear();
         editor.apply();
 

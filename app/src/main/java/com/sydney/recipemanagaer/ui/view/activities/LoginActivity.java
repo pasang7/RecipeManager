@@ -35,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         EditText editTextPassword = findViewById(R.id.editTextPassword);
         Button buttonLogin = findViewById(R.id.buttonLogin);
         TextView textViewRegister = findViewById(R.id.textViewRegister);
+        TextView textViewForgotPassword = findViewById(R.id.textViewForgotPassword);
 
         buttonLogin.setOnClickListener(view -> {
             // Validate input
@@ -65,15 +66,18 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        textViewForgotPassword.setOnClickListener(view -> {
+            // Navigate to the RegisterActivity
+            Intent intent = new Intent(this, ForgotPasswordActivity.class);
+            startActivity(intent);
+        });
+
     }
     private boolean isValidCredentials(String username, String password) {
         //check if both fields are non-empty
         return !TextUtils.isEmpty(username) && !TextUtils.isEmpty(password);
     }
 
-    private boolean userIsLoggedIn() {
-        return userViewModel.getToken() != null && !userViewModel.getToken().isEmpty();
-    }
 
     private void navigateToMainActivity() {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);

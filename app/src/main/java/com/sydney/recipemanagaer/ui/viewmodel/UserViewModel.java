@@ -49,6 +49,10 @@ public class UserViewModel extends ViewModel {
         return userRepository.getUser(getLoggedInUserId());
     }
 
+    public LiveData<String> updatePassword(String currentPassword, String newPassword, String confirmPassword) {
+        return userRepository.updatePassword(currentPassword, newPassword, confirmPassword);
+    }
+
     public void clearSession() {
         userRepository.clearSession();
     }

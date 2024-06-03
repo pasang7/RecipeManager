@@ -26,6 +26,7 @@ import retrofit2.Response;
 public class RecipeRepository {
     private final RetrofitService retrofitService;
     UserRepository userRepository;
+    private String userToken;
 
     public RecipeRepository(Context context) {
         if (context == null) {
@@ -33,6 +34,7 @@ public class RecipeRepository {
         }
         userRepository = new UserRepository(context);
         retrofitService = new RetrofitService(context);
+        this.userToken = userRepository.getToken();
     }
 
     public LiveData<List<Recipe>> getRecipes() {
@@ -75,7 +77,7 @@ public class RecipeRepository {
         String userId = userRepository.getLoggedInUserId();
 
 
-        retrofitService.postRecipe(recipe, userId, new Callback<Void>() {
+        retrofitService.postRecipe(recipe, userId, userToken, new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, retrofit2.Response<Void> response) {
                 if (response.isSuccessful()) {
@@ -105,7 +107,7 @@ public class RecipeRepository {
     public LiveData<String> deleteRecipe(String recipeId) {
         MutableLiveData<String> responseData = new MutableLiveData<>();
 
-        retrofitService.deleteRecipe(recipeId, new Callback<String>() {
+        retrofitService.deleteRecipe(recipeId, userToken, new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, retrofit2.Response<String> response) {
                 if (response.isSuccessful()) {
@@ -133,7 +135,7 @@ public class RecipeRepository {
         }
         MutableLiveData<String> result = new MutableLiveData<>();
 
-        retrofitService.updateRecipe(recipe, new Callback<Void>() {
+        retrofitService.updateRecipe(recipe, userToken, new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, retrofit2.Response<Void> response) {
                 if (response.isSuccessful()) {
@@ -159,7 +161,7 @@ public class RecipeRepository {
         MutableLiveData<String> result = new MutableLiveData<>();
         String userId = userRepository.getLoggedInUserId();
 
-        retrofitService.markRecipeAsFavorite(recipeId, userId, new retrofit2.Callback<ResponseBody>() {
+        retrofitService.markRecipeAsFavorite(recipeId, userId, userToken, new retrofit2.Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -185,7 +187,7 @@ public class RecipeRepository {
         MutableLiveData<List<Recipe>> favoritesLiveData = new MutableLiveData<>();
         String userId = userRepository.getLoggedInUserId();
 
-        retrofitService.getUserFavorites(userId, new retrofit2.Callback<ResponseBody>() {
+        retrofitService.getUserFavorites(userId, userToken, new retrofit2.Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
@@ -245,7 +247,7 @@ public class RecipeRepository {
                 recipe.setFeaturedImgURL(featuredImgURL);
                 recipe.setImages(imagesURL);
 
-                String category = recipeObject.optString("category", "no type");
+                String category = recipeObject.getString("category");
                 recipe.setCategoryId(category);
 
                 recipes.add(recipe);
@@ -261,7 +263,7 @@ public class RecipeRepository {
         MutableLiveData<List<Recipe>> userRecipesLiveData = new MutableLiveData<>();
         String userId = userRepository.getLoggedInUserId();
 
-        retrofitService.getUserRecipes(userId, new retrofit2.Callback<ResponseBody>() {
+        retrofitService.getUserRecipes(userId, userToken, new retrofit2.Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {

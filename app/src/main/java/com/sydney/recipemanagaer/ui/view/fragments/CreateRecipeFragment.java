@@ -306,6 +306,7 @@ public class CreateRecipeFragment extends Fragment {
         chipGroup.removeAllViews();  // Remove all chips from the ChipGroup
         imageViewSelected.setImageResource(android.R.color.transparent);  // Reset or remove the image
         featuredImageUri = null;  // Clear the stored URI
+        images = null;
     }
 
     private void navigateToHome() {

@@ -12,7 +12,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
-    private static final String BASE_URL = "http://10.0.2.2:8000/api/v1/";
+    private static final String BASE_URL = Util.getBaseURL();
+
     private static Retrofit retrofit;
     private static  OkHttpClient okHttpClient;
     private static Context applicationContext; // Rename to applicationContext for clarity
@@ -31,24 +32,14 @@ public class RetrofitClient {
 
     }
     public static Retrofit getRetrofitInstance() {
-        Boolean isLoggedIn = Util.userIsLoggedIn(applicationContext);
-
-
         HttpLoggingInterceptor interceptRequest = new HttpLoggingInterceptor();
         interceptRequest.setLevel(HttpLoggingInterceptor.Level.BODY);
 
 
         if (retrofit == null) {
-            if(isLoggedIn) {
-                okHttpClient = new OkHttpClient.Builder()
-                        .addInterceptor(new AuthInterceptor(applicationContext))
-                        .addInterceptor(interceptRequest)
-                        .build();
-            } else {
                 okHttpClient = new OkHttpClient.Builder()
                         .addInterceptor(interceptRequest)
                         .build();
-            }
 
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
